@@ -983,10 +983,10 @@ class ScoresClient(object):
         return self._locations_to_scores.get(location.replace(version=None, branch=None))
 
     @classmethod
-    def from_field_data_cache(cls, fd_cache):
+    def create_for_locations(cls, course_id, user_id, scorable_locations):
         """Create a ScoresClient from a populated FieldDataCache."""
-        client = cls(fd_cache.course_id, fd_cache.user.id)
-        client.fetch_scores(fd_cache.scorable_locations)
+        client = cls(course_id, user_id)
+        client.fetch_scores(scorable_locations)
         return client
 
 

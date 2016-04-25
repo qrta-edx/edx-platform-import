@@ -23,6 +23,7 @@ from courseware.models import StudentModule
 from certificates.models import GeneratedCertificate
 from django.db.models import Count
 from certificates.models import CertificateStatuses
+from courseware.grades import grading_context
 
 
 STUDENT_FEATURES = ('id', 'username', 'first_name', 'last_name', 'is_staff', 'email')
@@ -479,14 +480,14 @@ def dump_grading_context(course):
     msg += hbar
     msg += "Listing grading context for course %s\n" % course.id.to_deprecated_string()
 
-    gcontext = course.grading_context
+    gcontext = grading_context(course)
     msg += "graded sections:\n"
 
-    msg += '%s\n' % gcontext['graded_sections'].keys()
-    for (gsomething, gsvals) in gcontext['graded_sections'].items():
+    msg += '%s\n' % gcontext['all_graded_sections'].keys()
+    for (gsomething, gsvals) in gcontext['all_graded_sections'].items():
         msg += "--> Section %s:\n" % (gsomething)
         for sec in gsvals:
-            sdesc = sec['section_descriptor']
+            sdesc = sec['section_block']
             frmat = getattr(sdesc, 'format', None)
             aname = ''
             if frmat in graders:
@@ -501,7 +502,7 @@ def dump_grading_context(course):
                 notes = ', score by attempt!'
             msg += "      %s (format=%s, Assignment=%s%s)\n"\
                 % (sdesc.display_name, frmat, aname, notes)
-    msg += "all descriptors:\n"
-    msg += "length=%d\n" % len(gcontext['all_descriptors'])
+    msg += "all scored blocks:\n"
+    msg += "length=%d\n" % len(gcontext['all_scored_blocks'])
     msg = '<pre>%s</pre>' % msg.replace('<', '&lt;')
     return msg

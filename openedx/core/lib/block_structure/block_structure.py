@@ -72,6 +72,9 @@ class BlockStructure(object):
         """
         return self.get_block_keys()
 
+    def __len__(self):
+        return len(self._block_relations)
+
     #--- Block structure relation methods ---#
 
     def get_parents(self, usage_key):
@@ -149,6 +152,7 @@ class BlockStructure(object):
             self,
             filter_func=None,
             yield_descendants_of_unyielded=False,
+            start_node=None,
     ):
         """
         Performs a topological sort of the block structure and yields
@@ -163,7 +167,7 @@ class BlockStructure(object):
                 traverse_topologically method.
         """
         return traverse_topologically(
-            start_node=self.root_block_usage_key,
+            start_node=start_node or self.root_block_usage_key,
             get_parents=self.get_parents,
             get_children=self.get_children,
             filter_func=filter_func,
@@ -173,6 +177,7 @@ class BlockStructure(object):
     def post_order_traversal(
             self,
             filter_func=None,
+            start_node=None,
     ):
         """
         Performs a post-order sort of the block structure and yields
@@ -187,7 +192,7 @@ class BlockStructure(object):
                 traverse_post_order method.
         """
         return traverse_post_order(
-            start_node=self.root_block_usage_key,
+            start_node=start_node or self.root_block_usage_key,
             get_children=self.get_children,
             filter_func=filter_func,
         )
@@ -271,7 +276,10 @@ class _BlockData(object):
     """
     Data structure to encapsulate collected data for a single block.
     """
-    def __init__(self):
+    def __init__(self, usage_key):
+        # Location (or usage key) of the block.
+        self.location = usage_key
+
         # Map of xblock field name to the field's value for this block.
         # dict {string: any picklable type}
         self.xblock_fields = {}
@@ -280,6 +288,22 @@ class _BlockData(object):
         # block.
         # defaultdict {string: dict}
         self.transformer_data = defaultdict(dict)
+
+    instance_fields = ('xblock_fields', 'transformer_data')
+
+    def __getattr__(self, field_name):
+        if field_name in self.instance_fields:
+            return super(_BlockData, self).__getattr__(field_name)
+        try:
+            return self.xblock_fields[field_name]
+        except KeyError:
+            raise AttributeError("Field {0} does not exist".format(field_name))
+
+    def __setattr__(self, field_name, field_value):
+        if field_name in self.instance_fields:
+            return super(_BlockData, self).__setattr__(field_name, field_value)
+        else:
+            self.xblock_fields[field_name] = field_value
 
 
 class BlockStructureBlockData(BlockStructure):
@@ -292,12 +316,32 @@ class BlockStructureBlockData(BlockStructure):
 
         # Map of a block's usage key to its collected data, including
         # its xBlock fields and block-specific transformer data.
-        # defaultdict {UsageKey: _BlockData}
-        self._block_data_map = defaultdict(_BlockData)
+        # dict {UsageKey: _BlockData}
+        self._block_data_map = {}
 
         # Map of a transformer's name to its non-block-specific data.
         # defaultdict {string: dict}
         self._transformer_data = defaultdict(dict)
+
+    def iteritems(self):
+        """
+        Returns iterator of (UsageKey, _BlockData) pairs for all
+        blocks in the BlockStructure.
+        """
+        return self._block_data_map.iteritems()
+
+    def itervalues(self):
+        """
+        Returns iterator of _BlockData for all blocks in the
+        BlockStructure.
+        """
+        return self._block_data_map.itervalues()
+
+    def __getitem__(self, usage_key):
+        """
+        Returns the _BlockData associated with the given key.
+        """
+        return self._block_data_map.get(usage_key)
 
     def get_xblock_field(self, usage_key, field_name, default=None):
         """
@@ -388,7 +432,7 @@ class BlockStructureBlockData(BlockStructure):
                 given key for the given transformer's data for the
                 requested block.
         """
-        self._block_data_map[usage_key].transformer_data[transformer.name()][key] = value
+        self._get_or_create_block(usage_key).transformer_data[transformer.name()][key] = value
 
     def get_transformer_block_data(self, usage_key, transformer):
         """
@@ -527,6 +571,14 @@ class BlockStructureBlockData(BlockStructure):
             raise TransformerException('VERSION attribute is not set on transformer {0}.', transformer.name())
         self.set_transformer_data(transformer, TRANSFORMER_VERSION_KEY, transformer.VERSION)
 
+    def _get_or_create_block(self, usage_key):
+        try:
+            return self._block_data_map[usage_key]
+        except KeyError:
+            block_data = _BlockData(usage_key)
+            self._block_data_map[usage_key] = block_data
+            return block_data
+
 
 class BlockStructureModulestoreData(BlockStructureBlockData):
     """
@@ -599,23 +651,19 @@ class BlockStructureModulestoreData(BlockStructureBlockData):
         Iterates through all instantiated xBlocks that were added and
         collects all xBlock fields that were requested.
         """
-        if not self._requested_xblock_fields:
-            return
-
         for xblock_usage_key, xblock in self._xblock_map.iteritems():
+            block_data = self._get_or_create_block(xblock_usage_key)
             for field_name in self._requested_xblock_fields:
-                self._set_xblock_field(xblock_usage_key, xblock, field_name)
+                self._set_xblock_field(block_data, xblock, field_name)
 
-    def _set_xblock_field(self, usage_key, xblock, field_name):
+    def _set_xblock_field(self, block_data, xblock, field_name):
         """
         Updates the given block's xBlock fields data with the xBlock
         value for the given field name.
 
         Arguments:
-            usage_key (UsageKey) - Usage key of the given xBlock.  This
-                value is passed in separately as opposed to retrieving
-                it from the given xBlock since this interface is
-                agnostic to and decoupled from the xBlock interface.
+            block_data (_BlockData) - A BlockStructure BlockData
+                object.
 
             xblock (XBlock) - An instantiated XBlock object whose
                 field is being accessed and collected for later
@@ -625,4 +673,4 @@ class BlockStructureModulestoreData(BlockStructureBlockData):
                 being collected and stored.
         """
         if hasattr(xblock, field_name):
-            self._block_data_map[usage_key].xblock_fields[field_name] = getattr(xblock, field_name)
+            block_data.xblock_fields[field_name] = getattr(xblock, field_name)
