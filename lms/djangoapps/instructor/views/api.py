@@ -3284,6 +3284,7 @@ def validate_request_data_and_get_certificate(certificate_invalidation, course_k
         )
 
     student = get_student(user, course_key)
+
     certificate = GeneratedCertificate.certificate_for_student(student, course_key)
     if not certificate:
         raise ValueError(_(
