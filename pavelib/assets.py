@@ -49,6 +49,7 @@ NPM_INSTALLED_LIBRARIES = [
     'underscore.string/dist/underscore.string.js',
     'picturefill/dist/picturefill.js',
     'backbone/backbone.js',
+    'backbone.paginator/lib/backbone.paginator.js',
 ]
 
 # Directory to install static vendor files

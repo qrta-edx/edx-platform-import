@@ -97,7 +97,7 @@ define(["jquery", "underscore", "gettext", "js/views/baseview", "js/models/asset
                 pagingView.registerFilterableColumn('js-asset-type-col', gettext('Type'), 'asset_type');
                 pagingView.setInitialSortColumn('js-asset-date-col');
                 pagingView.setInitialFilterColumn('js-asset-type-col');
-                pagingView.setPage(0);
+                pagingView.setPage(1);
                 return pagingView;
             },
 
@@ -106,7 +106,7 @@ define(["jquery", "underscore", "gettext", "js/views/baseview", "js/models/asset
                 return this;
             },
 
-            afterRender: function(){
+            afterRender: function() {
                 // Bind events with html elements
                 $('li a.upload-button').on('click', _.bind(this.showUploadModal, this));
                 $('.upload-modal .close-button').on('click', _.bind(this.hideModal, this));
@@ -285,12 +285,12 @@ define(["jquery", "underscore", "gettext", "js/views/baseview", "js/models/asset
                 var filterColumn = this.$el.find('.filterable-column');
                 var resetFilter = filterColumn.find('.reset-filter');
                 var title = filterColumn.find('.title');
-                if(assettype === this.allLabel) {
+
+                if (assettype === this.allLabel) {
                     collection.assetType = '';
                     resetFilter.hide();
                     title.removeClass('column-selected-link');
-                }
-                else {
+                } else {
                     collection.assetType = assettype;
                     resetFilter.show();
                     title.addClass('column-selected-link');

@@ -55,7 +55,7 @@
             "backbone": "common/js/vendor/backbone",
             "backbone-relational" : "js/vendor/backbone-relational.min",
             "backbone.associations": "js/vendor/backbone-associations-min",
-            "backbone.paginator": "js/vendor/backbone.paginator.min",
+            "backbone.paginator": "common/js/vendor/backbone.paginator",
             "tinymce": "js/vendor/tinymce/js/tinymce/tinymce.full.min",
             "jquery.tinymce": "js/vendor/tinymce/js/tinymce/jquery.tinymce.min",
             "xmodule": "/xmodule/xmodule",
@@ -69,6 +69,7 @@
             "modernizr": "edx-pattern-library/js/modernizr-custom",
             "afontgarde": "edx-pattern-library/js/afontgarde",
             "edxicons": "edx-pattern-library/js/edx-icons",
+            "paging-collection": "edx-ui-toolkit/js/pagination/paging-collection",
             "draggabilly": "js/vendor/draggabilly",
 
             // Files needed for Annotations feature
@@ -256,6 +257,9 @@
             },
             "afontgarde": {
                 exports: "AFontGarde"
+            },
+            "paging-collection": {
+                deps: ["jquery", "underscore", "backbone.paginator"]
             },
 
             // the following are all needed for annotation tools

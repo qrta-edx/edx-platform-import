@@ -66,7 +66,7 @@ define(["underscore", "backbone", "gettext", "text!templates/paging-header.under
             currentItemRangeLabel: function() {
                 var view = this.view,
                     collection = view.collection,
-                    start = collection.start,
+                    start = (collection.getPageNumber() - 1) * collection.getPageSize(),
                     count = collection.size(),
                     end = start + count;
                 return interpolate('<span class="count-current-shown">%(start)s-%(end)s</span>', {
@@ -78,11 +78,11 @@ define(["underscore", "backbone", "gettext", "text!templates/paging-header.under
             totalItemsCountLabel: function() {
                 var totalItemsLabel;
                 // Translators: turns into "25 total" to be used in other sentences, e.g. "Showing 0-9 out of 25 total".
-                totalItemsLabel = interpolate(gettext('%(total_items)s total'), {
-                    total_items: this.view.collection.totalCount
+                totalItemsLabel = interpolate(gettext('%(totalItems)s total'), {
+                    totalItems: this.view.collection.getTotalRecords()
                 }, true);
-                return interpolate('<span class="count-total">%(total_items_label)s</span>', {
-                    total_items_label: totalItemsLabel
+                return interpolate('<span class="count-total">%(totalItemsLabel)s</span>', {
+                    totalItemsLabel: totalItemsLabel
                 }, true);
             },
 

@@ -17,7 +17,6 @@
                     this.collection.bind('add', _.bind(this.render, this));
                     this.collection.bind('remove', _.bind(this.render, this));
                     this.collection.bind('reset', _.bind(this.render, this));
-                    this.render();
                 },
 
                 render: function() {
@@ -32,8 +31,8 @@
                         }
                     }
                     this.$el.html(_.template(paging_footer_template)({
-                        current_page: this.collection.getPage(),
-                        total_pages: this.collection.totalPages,
+                        current_page: this.collection.getPageNumber(),
+                        total_pages: this.collection.getTotalPages(),
                         paginationLabel: this.paginationLabel
                     }));
                     this.$(".previous-page-link").toggleClass("is-disabled", onFirstPage).attr('aria-disabled', onFirstPage);
@@ -43,7 +42,7 @@
 
                 changePage: function() {
                     var collection = this.collection,
-                        currentPage = collection.getPage(),
+                        currentPage = collection.getPageNumber(),
                         pageInput = this.$("#page-number-input"),
                         pageNumber = parseInt(pageInput.val(), 10),
                         validInput = true;
