@@ -22,10 +22,10 @@
                         <h3> ${_("You should Register before trying to access the Unit")}</h3>
                     </div>
                     <div class="heading-group">
-                        <h1>
+                        <p>
                             ${course.display_name_with_default}
                             <a href="#">${course.display_org_with_default}</a>
-                        </h1>
+                        </p>
                     </div>
                     <form role="form" id="enroll_staff_form" method="post" action="">
                         <input type="hidden" name="csrfmiddlewaretoken" value="${ csrftoken }"/>
