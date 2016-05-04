@@ -19,12 +19,17 @@ define(["underscore", "backbone", "gettext", "text!templates/paging-header.under
             render: function() {
                 var view = this.view,
                     collection = view.collection,
-                    currentPage = collection.currentPage,
-                    lastPage = collection.totalPages - 1,
-                    messageHtml = this.messageHtml();
+                    currentPage = collection.getPageNumber(),
+                    lastPage = collection.getTotalPages(),
+                    messageHtml = this.messageHtml(),
+                    isNextDisabled = lastPage === 0 || currentPage === lastPage;
                 this.$el.html(_.template(paging_header_template)({ messageHtml: messageHtml}));
-                this.$(".previous-page-link").toggleClass("is-disabled", currentPage === 0).attr('aria-disabled', currentPage === 0);
-                this.$(".next-page-link").toggleClass("is-disabled", currentPage === lastPage).attr('aria-disabled', currentPage === lastPage);
+                this.$(".previous-page-link")
+                    .toggleClass("is-disabled", currentPage === 1)
+                    .attr('aria-disabled', currentPage === 1);
+                this.$(".next-page-link")
+                    .toggleClass("is-disabled", isNextDisabled)
+                    .attr('aria-disabled', isNextDisabled);
                 return this;
             },
 

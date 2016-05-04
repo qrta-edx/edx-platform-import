@@ -81,7 +81,7 @@ define(["jquery", "underscore", "common/js/spec_helpers/ajax_helpers", "URI", "j
             });
 
             describe("Container", function () {
-                describe("rendering", function(){
+                describe("rendering", function() {
 
                     it('should set show_previews', function() {
                        var requests = AjaxHelpers.requests(this);
@@ -183,7 +183,7 @@ define(["jquery", "underscore", "common/js/spec_helpers/ajax_helpers", "URI", "j
 
                     it('does not move forward if a server error occurs', function () {
                         var requests = AjaxHelpers.requests(this);
-                        pagingContainer.setPage(0);
+                        pagingContainer.setPage(1);
                         respondWithMockPage(requests);
                         pagingContainer.pagingHeader.$('.next-page-link').click();
                         requests[1].respond(500);

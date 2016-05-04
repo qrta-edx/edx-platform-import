@@ -1,7 +1,7 @@
 ;(function (define) {
 'use strict';
 define([
-    'underscore', 'common/js/components/collections/paging_collection', 'js/edxnotes/models/note'
+    'underscore', 'paging-collection', 'js/edxnotes/models/note'
 ], function (_, PagingCollection, NoteModel) {
     return PagingCollection.extend({
         model: NoteModel,

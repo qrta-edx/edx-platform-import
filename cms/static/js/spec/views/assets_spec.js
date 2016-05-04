@@ -137,8 +137,7 @@ define([ "jquery", "common/js/spec_helpers/ajax_helpers", "URI", "js/views/asset
                     assetsView.pagingView.setPage(0);
                     if (!responseData){
                         AjaxHelpers.respondWithJson(requests, mockEmptyAssetsResponse);
-                    }
-                    else{
+                    } else {
                         AjaxHelpers.respondWithJson(requests, responseData);
                     }
                     return requests;
@@ -410,7 +409,7 @@ define([ "jquery", "common/js/spec_helpers/ajax_helpers", "URI", "js/views/asset
 
                     it('can move forward a page using the next page button', function () {
                         var requests = AjaxHelpers.requests(this);
-                        assetsView.pagingView.setPage(0);
+                        assetsView.pagingView.setPage(1);
                         AjaxHelpers.respondWithJson(requests, firstPageAssets);
                         expect(assetsView.pagingView.pagingFooter).toBeDefined();
                         expect(assetsView.pagingView.pagingFooter.$('button.next-page-link'))

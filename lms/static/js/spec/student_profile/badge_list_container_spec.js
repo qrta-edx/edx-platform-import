@@ -1,9 +1,14 @@
-define(['backbone', 'jquery', 'underscore', 'URI', 'common/js/spec_helpers/ajax_helpers',
+define([
+        'backbone',
+        'jquery',
+        'underscore',
+        'URI',
+        'paging-collection',
+        'common/js/spec_helpers/ajax_helpers',
         'js/spec/student_profile/helpers',
-        'js/student_profile/views/badge_list_container',
-        'common/js/components/collections/paging_collection'
+        'js/student_profile/views/badge_list_container'
     ],
-    function (Backbone, $, _, URI, AjaxHelpers, LearnerProfileHelpers, BadgeListContainer, PagingCollection) {
+    function (Backbone, $, _, URI, PagingCollection, AjaxHelpers, LearnerProfileHelpers, BadgeListContainer) {
         'use strict';
         describe('edx.user.BadgeListContainer', function () {
 

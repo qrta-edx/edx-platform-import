@@ -1,6 +1,6 @@
 ;(function (define) {
     'use strict';
-    define(['backbone', 'common/js/components/collections/paging_collection', 'js/bookmarks/models/bookmark'],
+    define(['backbone', 'paging-collection', 'js/bookmarks/models/bookmark'],
         function (Backbone, PagingCollection, BookmarkModel) {
 
             return PagingCollection.extend({

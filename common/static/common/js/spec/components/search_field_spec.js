@@ -1,9 +1,9 @@
 define([
     'underscore',
+    'paging-collection',
     'common/js/components/views/search_field',
-    'common/js/components/collections/paging_collection',
     'common/js/spec_helpers/ajax_helpers'
-], function (_, SearchFieldView, PagingCollection, AjaxHelpers) {
+], function (_, PagingCollection, SearchFieldView, AjaxHelpers) {
     'use strict';
     describe('SearchFieldView', function () {
         var searchFieldView,

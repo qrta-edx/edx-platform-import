@@ -27,9 +27,10 @@
             'underscore.string': 'common/js/vendor/underscore.string',
             'backbone': 'common/js/vendor/backbone',
             'backbone.associations': 'js/vendor/backbone-associations-min',
-            'backbone.paginator': 'js/vendor/backbone.paginator.min',
+            'backbone.paginator': 'common/js/vendor/backbone.paginator',
             'backbone-super': 'js/vendor/backbone-super',
             'jasmine-imagediff': 'js/vendor/jasmine-imagediff',
+            'paging-collection': 'edx-ui-toolkit/js/pagination/paging-collection',
             'URI': 'js/vendor/URI.min',
             'modernizr': 'edx-pattern-library/js/modernizr-custom',
             'afontgarde': 'edx-pattern-library/js/afontgarde',
@@ -154,6 +155,9 @@
             },
             "afontgarde": {
                 exports: "AFontGarde"
+            },
+            "paging-collection": {
+                deps: ["jquery", "underscore", "backbone.paginator"]
             }
         }
     });
@@ -163,7 +167,6 @@
         'common/js/spec/components/feedback_spec.js',
         'common/js/spec/components/list_spec.js',
         'common/js/spec/components/paginated_view_spec.js',
-        'common/js/spec/components/paging_collection_spec.js',
         'common/js/spec/components/paging_header_spec.js',
         'common/js/spec/components/paging_footer_spec.js',
         'common/js/spec/components/search_field_spec.js',

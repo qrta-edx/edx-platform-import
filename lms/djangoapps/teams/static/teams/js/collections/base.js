@@ -1,6 +1,6 @@
 ;(function (define) {
     'use strict';
-    define(['common/js/components/collections/paging_collection'],
+    define(['paging-collection'],
         function(PagingCollection) {
             var BaseCollection = PagingCollection.extend({
                 initialize: function(options) {
