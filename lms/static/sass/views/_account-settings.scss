@@ -9,11 +9,12 @@
 
 // +Container - Account Settings
 .wrapper-account-settings {
-    @extend .container;
-    padding-top: ($baseline*2);
-
+    background: $white;
+    width: 100%;
     .account-settings-container {
+        max-width: grid-width(12);
         padding: 0;
+        margin: 0 auto;
     }
 
     .ui-loading-indicator,
@@ -36,45 +37,265 @@
 .wrapper-account-settings {
 
     .wrapper-header {
+        max-width: grid-width(12);
+        height: 139px;
+        border-bottom: 4px solid #f5f5f5;
 
         .header-title {
             @extend %t-title4;
             margin-bottom: ($baseline/2);
+            padding-top: ($baseline*2);
         }
 
         .header-subtitle {
             color: $gray-l2;
         }
+
+        .account-nav {
+        margin: ($baseline/2) 0px;
+        padding: 0px;
+        list-style: none;
+        @include float(left);
+        .account-nav-item{
+            display: flex;
+            margin: 0px;
+            text-transform: none;
+            @include float(left);
+            justify-content: center;
+            .account-nav-link{
+                font-size: em(16);
+                color: #7a7979;
+                padding: 5px 25px 23px;
+                display: inline-block;
+            }
+            .active{
+                border-bottom: 4px solid $courseware-border-bottom-color !important;
+            }
+        }
+        li,
+        div {
+            display: inline-block;
+            margin: 0 $baseline+1 0 0;
+            font-size: em(14);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0 !important;
+
+            &:last-child {
+                margin-right: 0;
+            }
+
+            a {
+                display:block;
+                padding: ($baseline/4);
+                color: $link-color;
+                font-weight: 600;
+
+                &:hover, &:focus, &:active {
+                    text-decoration: none;
+                    color: $link-color;
+                }
+            }
+
+            &.active {
+
+                a {
+                    text-decoration: none;
+                    color: $link-color;
+                }
+            }
+        }
+      }
     }
 }
 
 // +Settings Section
 .account-settings-sections {
+    padding-bottom: ($baseline*5);
 
     .section-header {
         @extend %t-title6;
         @extend %t-strong;
-        padding-bottom: ($baseline/2);
-        border-bottom: 1px solid $gray-l4;
+        padding-top: ($baseline/2)*3;
+        color: #5a5959;
     }
 
     .section {
         background-color: $white;
-        padding: $baseline;
         margin-top: $baseline;
-        border: 1px solid $gray-l4;
-        box-shadow: 0 0 1px 1px $shadow-l2;
-        border-radius: 5px;
-    }
+        border-bottom: 4px solid #f5f5f5;
 
-    a span {
-        color: $link-color;
-    }
+        .account-settings-header-subtitle {
+            font-size: em(18);
+            color: #7a7979;
+            padding-top: 20px;
+            padding-bottom: 10px;
+        }
 
-    a span {
-        &:hover, &:focus {
-            color: $pink;
-            text-decoration: none !important;
+        .account-settings-section-body {
+
+            .u-field {
+                border-bottom: 2px solid #f5f5f5;
+
+                .field {
+                    width: 30%;
+                    vertical-align: top;
+                    display: inline-block;
+                    position: relative;
+
+                    select {
+                        -webkit-appearance: none;
+                        -moz-appearance: none;
+                        appearance: none;
+                        padding: 14px 30px 14px 15px;
+                        border: 1px solid #dae0e3;
+                        background-color: transparent;
+                        border-radius: 2px;
+                        position: relative;
+                        z-index: 10;
+                        &::-ms-expand{
+                            display: none;
+                        }
+                        ~ .icon-caret-down{
+                            &:after{
+                                content: "";
+                                border-left: 6px solid transparent;
+                                border-right: 6px solid transparent;
+                                border-top: 7px solid #0078be;
+                                position: absolute;
+                                right: 10px;
+                                bottom: 20px;
+                                z-index: 0;
+                            }
+                        }
+                    }
+                    .field-label {
+                        display: block;
+                        width: auto;
+                        margin-bottom: 0.625rem;
+                        font-size: 1rem;
+                        line-height: 100%;
+                        color: #7a7979;
+                    }
+
+                    .field-input {
+                        webkit-transition: all 0.125s ease-in-out 0s;
+                        transition: all 0.125s ease-in-out 0s;
+                        display: inline-block;
+                        padding: 0.625rem;
+                        border: 1px solid #dae0e3;
+                        border-radius: 2px;
+                        background: $white;
+                        font-size: 1rem;
+                        color: #7a7979;
+                        width: 100%;
+                        height: 48px;
+                        box-shadow: none;
+                    }
+
+                    .u-field-link {
+                        @extend %ui-clear-button;
+
+                        // set styles
+                        @extend %btn-pl-default-base;
+                        @include font-size(18);
+                        width: 100%;
+                        border: 1px solid #0078be;
+                        color: #0078be;
+                        padding: 11px 14px 11px 14px;
+                        line-height: normal;
+                    }
+
+                    #u-field-value-username {
+                        padding-top: ($baseline/2);
+                    }
+                }
+
+                .social-field-linked {
+                    background: #fcfcfc;
+                    box-shadow: 0 1px 2px 1px rgba(167, 164, 164, 0.25);
+                    padding: 1.25rem 1.25rem;
+                    box-sizing: border-box;
+                    margin: 10px;
+                    width: 100%;
+
+                    .field-label {
+                        font-size: 24px;
+                        margin-bottom: 34px;
+                    }
+
+                    .u-field-link {
+                        border: none;
+                        margin-top: $baseline;
+                        @include font-size(14);
+                        font-weight: 600;
+                        text-align: left;
+                        padding: 0;
+
+                        &:focus {
+                            background-color: transparent;
+                            color: #126f9a;
+                            border: none;
+                        }
+
+                        &:hover {
+                            background-color: transparent;
+                            color: #126f9a;
+                            border: none;
+                        }
+                    }
+                }
+
+                .social-field-unlinked {
+                    background: #f2f1f1;
+                    box-shadow: 0 1px 2px 1px rgba(167, 164, 164, 0.25);
+                    padding: 1.25rem 1.25rem;
+                    box-sizing: border-box;
+                    text-align: center;
+                    margin: 10px;
+                    width: 100%;
+
+                    .field-label {
+                        font-size: 24px;
+                        text-align: center;
+                    }
+
+                    .u-field-link {
+                        margin-top: $baseline;
+                        @include font-size(14);
+                        font-weight: 600;
+                    }
+                }
+                
+                .u-field-message {
+                    padding: 24px 0 0 ($baseline*5);
+
+                    .u-field-message-notification {
+                        padding-top: 16px;
+                        display: inline-block;
+                    }
+                }
+
+                &:last-child {
+                    border-bottom: none;
+                }
+            }
+
+            .u-field-social {
+                border-bottom: none;
+                margin-right: 20px;
+                width: 30%;
+                display: inline-block;
+
+                .u-field-social-help {
+                    @include font-size(12);
+                    color: #787676;
+                }
+            }
+        }
+
+        &:last-child {
+            border-bottom: none;
         }
     }
 }

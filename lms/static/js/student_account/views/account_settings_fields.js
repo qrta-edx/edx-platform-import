@@ -1,12 +1,42 @@
 ;(function (define, undefined) {
     'use strict';
     define([
-        'gettext', 'jquery', 'underscore', 'backbone', 'js/views/fields'
-    ], function (gettext, $, _, Backbone, FieldViews) {
+        'gettext',
+        'jquery',
+        'underscore',
+        'backbone',
+        'js/views/fields',
+        'text!templates/fields/field_text_account.underscore',
+        'text!templates/fields/field_readonly_account.underscore',
+        'text!templates/fields/field_link_account.underscore',
+        'text!templates/fields/field_dropdown_account.underscore',
+        'text!templates/fields/field_social_link_account.underscore'
+    ], function (gettext, $, _, Backbone,
+                 FieldViews,
+                 field_text_account_template,
+                 field_readonly_account_template,
+                 field_link_account_template,
+                 field_dropdown_account_template,
+                 field_social_link_template
+    ) {
 
         var AccountSettingsFieldViews = {};
 
+        AccountSettingsFieldViews.ReadonlyFieldView = FieldViews.ReadonlyFieldView.extend({
+            fieldTemplate: field_readonly_account_template
+        });
+
+        AccountSettingsFieldViews.TextFieldView = FieldViews.TextFieldView.extend({
+            fieldTemplate: field_text_account_template
+        });
+
+        AccountSettingsFieldViews.DropdownFieldView = FieldViews.DropdownFieldView.extend({
+            fieldTemplate: field_dropdown_account_template
+        });
+
         AccountSettingsFieldViews.EmailFieldView = FieldViews.TextFieldView.extend({
+
+            fieldTemplate: field_text_account_template,
 
             successMessage: function() {
                 return this.indicators.success + interpolate_text(
@@ -20,6 +50,8 @@
         });
 
         AccountSettingsFieldViews.LanguagePreferenceFieldView = FieldViews.DropdownFieldView.extend({
+
+            fieldTemplate: field_dropdown_account_template,
 
             saveSucceeded: function () {
                 var data = {
@@ -47,6 +79,8 @@
         });
 
         AccountSettingsFieldViews.PasswordFieldView = FieldViews.LinkFieldView.extend({
+
+            fieldTemplate: field_link_account_template,
 
             initialize: function (options) {
                 this.options = _.extend({}, options);
@@ -88,7 +122,7 @@
             }
         });
 
-        AccountSettingsFieldViews.LanguageProficienciesFieldView = FieldViews.DropdownFieldView.extend({
+        AccountSettingsFieldViews.LanguageProficienciesFieldView = AccountSettingsFieldViews.DropdownFieldView.extend({
 
             modelValue: function () {
                 var modelValue = this.model.get(this.options.valueAttribute);
@@ -111,6 +145,12 @@
 
         AccountSettingsFieldViews.AuthFieldView = FieldViews.LinkFieldView.extend({
 
+            fieldTemplate: field_social_link_template,
+
+            className: function () {
+                return 'u-field u-field-social u-field-' + this.options.valueAttribute;
+            },
+
             initialize: function (options) {
                 this.options = _.extend({}, options);
                 this._super(options);
@@ -119,12 +159,24 @@
 
             render: function () {
                 var linkTitle;
+                var linkClass;
+                var subTitle;
                 if (this.options.connected) {
-                    linkTitle = gettext('Unlink');
+                    linkTitle = gettext('Unlink this account');
+                    linkClass = 'social-field-linked';
+                    subTitle = gettext(
+                        'Your ' + this.options.title + ' account can be used to login into your edX account.'
+                    );
                 } else if (this.options.acceptsLogins) {
-                    linkTitle = gettext('Link')
+                    linkTitle = gettext('Link your Account');
+                    linkClass = 'social-field-unlinked';
+                    subTitle = gettext(
+                        'Link your ' + this.options.title + ' account so you can easily log into edX ' +
+                        'using your ' + this.options.title + ' account details.'
+                    );
                 } else {
-                    linkTitle = ''
+                    linkTitle = '';
+                    linkClass = '';
                 }
 
                 this.$el.html(this.template({
@@ -132,6 +184,8 @@
                     title: this.options.title,
                     screenReaderTitle: this.options.screenReaderTitle,
                     linkTitle: linkTitle,
+                    subTitle: subTitle,
+                    linkClass: linkClass,
                     linkHref: '',
                     message: this.helpMessage
                 }));

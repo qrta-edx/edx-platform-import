@@ -69,7 +69,6 @@ define(['underscore'], function(_) {
 
     var expectElementContainsField = function(element, field) {
         var view = field.view;
-
         var fieldTitle = $(element).find('.u-field-title').text().trim();
         expect(fieldTitle).toBe(view.options.title);
 
@@ -87,7 +86,7 @@ define(['underscore'], function(_) {
     };
 
     var expectSettingsSectionsAndFieldsToBeRendered = function (accountSettingsView, fieldsAreRendered) {
-        var sectionsData = accountSettingsView.options.sectionsData;
+        var sectionsData = accountSettingsView.options.tabSections.aboutTabSections;
 
         var sectionElements = accountSettingsView.$('.section');
         expect(sectionElements.length).toBe(sectionsData.length);

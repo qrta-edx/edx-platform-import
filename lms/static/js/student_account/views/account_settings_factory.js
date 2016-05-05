@@ -2,12 +2,11 @@
     'use strict';
     define([
         'gettext', 'jquery', 'underscore', 'backbone', 'logger',
-        'js/views/fields',
         'js/student_account/models/user_account_model',
         'js/student_account/models/user_preferences_model',
         'js/student_account/views/account_settings_fields',
         'js/student_account/views/account_settings_view'
-    ], function (gettext, $, _, Backbone, Logger, FieldViews, UserAccountModel, UserPreferencesModel,
+    ], function (gettext, $, _, Backbone, Logger, UserAccountModel, UserPreferencesModel,
                  AccountSettingsFieldViews, AccountSettingsView) {
 
         return function (fieldsData, authData, userAccountsApiUrl, userPreferencesApiUrl, accountUserId, platformName) {
@@ -20,12 +19,16 @@
             var userPreferencesModel = new UserPreferencesModel();
             userPreferencesModel.url = userPreferencesApiUrl;
 
-            var sectionsData = [
+            var aboutSectionsData = [
                  {
-                    title: gettext('Basic Account Information (required)'),
+                    title: gettext('Basic Account Information'),
+                    subtitle: gettext(
+                        'These settings include basic information about your account. You can also ' +
+                        'specify additional information and see your linked social accounts on this page.'
+                    ),
                     fields: [
                         {
-                            view: new FieldViews.ReadonlyFieldView({
+                            view: new AccountSettingsFieldViews.ReadonlyFieldView({
                                 model: userAccountModel,
                                 title: gettext('Username'),
                                 valueAttribute: 'username',
@@ -35,7 +38,7 @@
                             })
                         },
                         {
-                            view: new FieldViews.TextFieldView({
+                            view: new AccountSettingsFieldViews.TextFieldView({
                                 model: userAccountModel,
                                 title: gettext('Full Name'),
                                 valueAttribute: 'name',
@@ -63,7 +66,7 @@
                                 screenReaderTitle: gettext('Reset your Password'),
                                 valueAttribute: 'password',
                                 emailAttribute: 'email',
-                                linkTitle: gettext('Reset Password'),
+                                linkTitle: gettext('Reset Your Password'),
                                 linkHref: fieldsData.password.url,
                                 helpMessage: gettext('When you click "Reset Password", a message will be sent to your email address. Click the link in the message to reset your password.')
                             })
@@ -83,7 +86,7 @@
                             })
                         },
                         {
-                            view: new FieldViews.DropdownFieldView({
+                            view: new AccountSettingsFieldViews.DropdownFieldView({
                                 model: userAccountModel,
                                 required: true,
                                 title: gettext('Country or Region'),
@@ -95,10 +98,10 @@
                     ]
                 },
                 {
-                    title: gettext('Additional Information (optional)'),
+                    title: gettext('Additional Information'),
                     fields: [
                         {
-                            view: new FieldViews.DropdownFieldView({
+                            view: new AccountSettingsFieldViews.DropdownFieldView({
                                 model: userAccountModel,
                                 title: gettext('Education Completed'),
                                 valueAttribute: 'level_of_education',
@@ -107,7 +110,7 @@
                             })
                         },
                         {
-                            view: new FieldViews.DropdownFieldView({
+                            view: new AccountSettingsFieldViews.DropdownFieldView({
                                 model: userAccountModel,
                                 title: gettext('Gender'),
                                 valueAttribute: 'gender',
@@ -116,7 +119,7 @@
                             })
                         },
                         {
-                            view: new FieldViews.DropdownFieldView({
+                            view: new AccountSettingsFieldViews.DropdownFieldView({
                                 model: userAccountModel,
                                 title: gettext('Year of Birth'),
                                 valueAttribute: 'year_of_birth',
@@ -137,9 +140,13 @@
                 }
             ];
 
-            if (_.isArray(authData.providers)) {
-                var accountsSectionData = {
+            var accountsSectionData = [
+                {
                     title: gettext('Connected Accounts'),
+                    subtitle: gettext(
+                        'You can choose to connect social accounts to edX in order to more easily login' +
+                        'when you return to either edX.org or the edX mobile application.'
+                    ),
                     fields: _.map(authData.providers, function(provider) {
                         return {
                             'view': new AccountSettingsFieldViews.AuthFieldView({
@@ -156,24 +163,23 @@
                             })
                         };
                     })
-                };
-                sectionsData.push(accountsSectionData);
-            }
+                }
+            ];
 
             var accountSettingsView = new AccountSettingsView({
                 model: userAccountModel,
                 accountUserId: accountUserId,
                 el: accountSettingsElement,
-                sectionsData: sectionsData
+                tabSections: {
+                    aboutTabSections: aboutSectionsData,
+                    accountsTabSections: accountsSectionData
+                },
+                userPreferencesModel: userPreferencesModel
             });
 
             accountSettingsView.render();
 
-            var showLoadingError = function () {
-                accountSettingsView.showLoadingError();
-            };
-
-            var showAccountFields = function () {
+            var showAccountSettingsPage = function () {
                 // Record that the account settings page was viewed.
                 Logger.log('edx.user.settings.viewed', {
                     page: "account",
@@ -185,11 +191,15 @@
                 accountSettingsView.renderFields();
             };
 
+            var showLoadingError = function () {
+                accountSettingsView.showLoadingError();
+            };
+
             userAccountModel.fetch({
                 success: function () {
                     // Fetch the user preferences model
                     userPreferencesModel.fetch({
-                        success: showAccountFields,
+                        success: showAccountSettingsPage,
                         error: showLoadingError
                     });
                 },
