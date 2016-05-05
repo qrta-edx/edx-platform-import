@@ -14,7 +14,7 @@ from mock import patch, Mock
 from nose.plugins.attrib import attr
 from smtplib import SMTPDataError, SMTPServerDisconnected, SMTPConnectError
 
-from bulk_email.models import CourseEmail, SEND_TO_ALL
+from bulk_email.models import CourseEmail, SEND_TO_ALL, BulkEmailFlag
 from bulk_email.tasks import perform_delegate_email_batches, send_course_email
 from instructor_task.models import InstructorTask
 from instructor_task.subtasks import (
@@ -38,7 +38,10 @@ class EmailTestException(Exception):
 
 @attr('shard_1')
 @patch('bulk_email.models.html_to_text', Mock(return_value='Mocking CourseEmail.text_message', autospec=True))
-@patch.dict(settings.FEATURES, {'ENABLE_INSTRUCTOR_EMAIL': True, 'REQUIRE_COURSE_EMAIL_AUTH': False})
+@patch(
+    'bulk_email.models.BulkEmailFlag.current',
+    Mock(return_value=BulkEmailFlag(enabled=True, require_course_email_auth=False))
+)
 class TestEmailErrors(ModuleStoreTestCase):
     """
     Test that errors from sending email are handled properly.

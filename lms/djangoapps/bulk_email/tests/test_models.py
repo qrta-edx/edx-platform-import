@@ -10,7 +10,7 @@ from student.tests.factories import UserFactory
 from mock import patch, Mock
 from nose.plugins.attrib import attr
 
-from bulk_email.models import CourseEmail, SEND_TO_STAFF, CourseEmailTemplate, CourseAuthorization
+from bulk_email.models import CourseEmail, SEND_TO_STAFF, CourseEmailTemplate, CourseAuthorization, BulkEmailFlag
 from opaque_keys.edx.locations import SlashSeparatedCourseKey
 
 
@@ -173,17 +173,20 @@ class CourseEmailTemplateTest(TestCase):
 class CourseAuthorizationTest(TestCase):
     """Test the CourseAuthorization model."""
 
-    @patch.dict(settings.FEATURES, {'REQUIRE_COURSE_EMAIL_AUTH': True})
+    @patch(
+        'bulk_email.models.BulkEmailFlag.current',
+        Mock(return_value=BulkEmailFlag(enabled=True, require_course_email_auth=True))
+    )
     def test_creation_auth_on(self):
         course_id = SlashSeparatedCourseKey('abc', '123', 'doremi')
         # Test that course is not authorized by default
-        self.assertFalse(CourseAuthorization.instructor_email_enabled(course_id))
+        self.assertFalse(BulkEmailFlag.feature_enabled(course_id))
 
         # Authorize
         cauth = CourseAuthorization(course_id=course_id, email_enabled=True)
         cauth.save()
         # Now, course should be authorized
-        self.assertTrue(CourseAuthorization.instructor_email_enabled(course_id))
+        self.assertTrue(BulkEmailFlag.feature_enabled(course_id))
         self.assertEquals(
             cauth.__unicode__(),
             "Course 'abc/123/doremi': Instructor Email Enabled"
@@ -193,21 +196,24 @@ class CourseAuthorizationTest(TestCase):
         cauth.email_enabled = False
         cauth.save()
         # Test that course is now unauthorized
-        self.assertFalse(CourseAuthorization.instructor_email_enabled(course_id))
+        self.assertFalse(BulkEmailFlag.feature_enabled(course_id))
         self.assertEquals(
             cauth.__unicode__(),
             "Course 'abc/123/doremi': Instructor Email Not Enabled"
         )
 
-    @patch.dict(settings.FEATURES, {'REQUIRE_COURSE_EMAIL_AUTH': False})
+    @patch(
+        'bulk_email.models.BulkEmailFlag.current',
+        Mock(return_value=BulkEmailFlag(enabled=True, require_course_email_auth=False))
+    )
     def test_creation_auth_off(self):
         course_id = SlashSeparatedCourseKey('blahx', 'blah101', 'ehhhhhhh')
         # Test that course is authorized by default, since auth is turned off
-        self.assertTrue(CourseAuthorization.instructor_email_enabled(course_id))
+        self.assertTrue(BulkEmailFlag.feature_enabled(course_id))
 
         # Use the admin interface to unauthorize the course
         cauth = CourseAuthorization(course_id=course_id, email_enabled=False)
         cauth.save()
 
         # Now, course should STILL be authorized!
-        self.assertTrue(CourseAuthorization.instructor_email_enabled(course_id))
+        self.assertTrue(BulkEmailFlag.feature_enabled(course_id))
