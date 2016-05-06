@@ -1115,6 +1115,7 @@
 
                 this.captionControlEl
                     .addClass('is-active')
+                    .attr('title', gettext('Hide closed captions'))
                     .find('.control-text')
                         .text(gettext('Hide closed captions'));
 
@@ -1138,6 +1139,7 @@
 
                 this.captionControlEl
                     .removeClass('is-active')
+                    .attr('title', gettext('Turn on closed captioning'))
                     .find('.control-text')
                         .text(gettext('Turn on closed captioning'));
 
@@ -1194,6 +1196,7 @@
 
                     transcriptControlEl
                         .removeClass('is-active')
+                        .attr('title', gettext(text))
                         .find('.control-text')
                             .text(gettext(text));
                 } else {
@@ -1207,6 +1210,7 @@
 
                     transcriptControlEl
                         .addClass('is-active')
+                        .attr('title', gettext(text))
                         .find('.control-text')
                             .text(gettext(text));
                 }
