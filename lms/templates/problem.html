@@ -8,9 +8,7 @@
 <div class="problem-progress"></div>
 
 <div class="problem">
-    <div aria-live="polite">
-        ${ problem['html'] }
-    </div>
+  ${ problem['html'] }
   <div class="action">
     <input type="hidden" name="problem_id" value="${ problem['name'] }" />
     % if demand_hint_possible:
