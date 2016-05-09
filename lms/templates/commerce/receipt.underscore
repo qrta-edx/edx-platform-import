@@ -99,6 +99,7 @@
           >
             <%- gettext( "Verify Now" ) %>
           </a>
+      <% } %>
     </nav>
   </article>
 </div>
