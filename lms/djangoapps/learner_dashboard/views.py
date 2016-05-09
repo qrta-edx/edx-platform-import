@@ -45,3 +45,36 @@ def view_programs(request):
     }
 
     return render_to_response('learner_dashboard/programs.html', context)
+
+
+def view_program_details(request, programId):
+    """View programs in which the user is engaged."""
+    show_program_listing = ProgramsApiConfig.current().show_program_listing
+    if not show_program_listing:
+        raise Http404
+
+    enrollments = list(get_course_enrollments(request.user, None, []))
+    meter = ProgramProgressMeter(request.user, enrollments)
+    programs = meter.engaged_programs
+
+    # TODO: Pull 'xseries' string from configuration model.
+    marketing_root = urljoin(settings.MKTG_URLS.get('ROOT'), 'xseries').strip('/')
+    for program in programs:
+        program['display_category'] = get_display_category(program)
+        program['marketing_url'] = '{root}/{slug}'.format(
+            root=marketing_root,
+            slug=program['marketing_slug']
+        )
+
+    context = {
+        'programs': programs,
+        'progress': meter.progress,
+        'xseries_url': marketing_root if ProgramsApiConfig.current().show_xseries_ad else None,
+        'nav_hidden': True,
+        'show_program_listing': show_program_listing,
+        'credentials': _get_xseries_credentials(request.user),
+        'disable_courseware_js': True,
+        'uses_pattern_library': True
+    }
+
+    return render_to_response('learner_dashboard/program_details.html', context)
