@@ -16,7 +16,7 @@
                     'keyup .search-field': 'refreshState',
                     'click .action-clear': 'clearSearch',
                     'mouseover .action-clear': 'setMouseOverState',
-                    'mouseout .action-clear': 'setMouseOutState',
+                    'mouseout .action-clear': 'setMouseOutState'
                 },
 
                 initialize: function(options) {
@@ -73,7 +73,7 @@
                 clearSearch: function(event) {
                     event.preventDefault();
                     this.$('.search-field').val('');
-                    this.collection.setSearchString('');
+                    this.collection.unsetSearchString();
                     this.refreshState();
                     return this.collection.refresh();
                 }

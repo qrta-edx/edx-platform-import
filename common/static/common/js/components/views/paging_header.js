@@ -21,15 +21,15 @@
 
             render: function () {
                 var message,
-                    start = _.isUndefined(this.collection.start) ? 0 : this.collection.start,
-                    end = start + this.collection.length,
-                    num_items = _.isUndefined(this.collection.totalCount) ? 0 : this.collection.totalCount,
-                    context = {first_index: Math.min(start + 1, end), last_index: end, num_items: num_items};
+                    start = (this.collection.getPageNumber() - 1) * this.collection.getPageSize(),
+                    end = start + this.collection.size(),
+                    numItems = this.collection.getTotalRecords(),
+                    context = {firstIndex: Math.min(start + 1, end), lastIndex: end, numItems: numItems};
                 if (end <= 1) {
-                    message = interpolate(gettext('Showing %(first_index)s out of %(num_items)s total'), context, true);
+                    message = interpolate(gettext('Showing %(firstIndex)s out of %(numItems)s total'), context, true);
                 } else {
                     message = interpolate(
-                        gettext('Showing %(first_index)s-%(last_index)s out of %(num_items)s total'),
+                        gettext('Showing %(firstIndex)s-%(lastIndex)s out of %(numItems)s total'),
                         context, true
                     );
                 }

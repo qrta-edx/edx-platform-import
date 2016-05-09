@@ -23,8 +23,7 @@
                     var onFirstPage = !this.collection.hasPreviousPage(),
                         onLastPage = !this.collection.hasNextPage();
                     if (this.hideWhenOnePage) {
-                        if (_.isUndefined(this.collection.totalPages)
-                                || this.collection.totalPages <= 1) {
+                        if (this.collection.getTotalPages() <= 1) {
                             this.$el.addClass('hidden');
                         } else if (this.$el.hasClass('hidden')) {
                             this.$el.removeClass('hidden');
@@ -46,7 +45,7 @@
                         pageInput = this.$("#page-number-input"),
                         pageNumber = parseInt(pageInput.val(), 10),
                         validInput = true;
-                    if (!pageNumber || pageNumber > collection.totalPages || pageNumber < 1) {
+                    if (!pageNumber || pageNumber > collection.getTotalPages() || pageNumber < 1) {
                         validInput = false;
                     }
                     // If we still have a page number by this point,

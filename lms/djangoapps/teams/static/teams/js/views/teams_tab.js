@@ -354,7 +354,6 @@
                 createTeamsListView: function(options) {
                     var topic = options.topic,
                         collection = options.collection,
-                        self = this,
                         teamsView = new TopicTeamsView({
                             router: this.router,
                             context: this.context,
