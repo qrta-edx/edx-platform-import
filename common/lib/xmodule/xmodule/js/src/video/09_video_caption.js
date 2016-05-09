@@ -95,7 +95,12 @@
                             '</span>',
                         '</button>',
                         '<div class="lang menu-container" role="application">',
-                            '<button class="control language-menu" aria-label="" aria-disabled="false">',
+                            '<p class="sr instructions" id="lang-instructions"></p>',
+                            '<button class="control language-menu" aria-disabled="false"',
+                                'aria-describedby="lang-instructions" ',
+                                'title="',
+                                    gettext('Open language menu'),
+                                '">',
                                 '<span class="icon-fallback-img">',
                                     '<span class="icon fa fa-caret-left" aria-hidden="true"></span>',
                                     '<span class="sr control-text"></span>',
@@ -759,8 +764,8 @@
                     self.subtitlesEl.find('.transcript-end')
                         .text(gettext('End of transcript. Skip to the start.'));
 
-                    self.container.find('.menu-container .language-menu')
-                        .attr('aria-label', gettext('Language: Press the UP arrow key to enter the language menu then use UP and DOWN arrow keys to navigate language options. Press ENTER to change to the selected language.')); // jshint ignore:line
+                    self.container.find('.menu-container .instructions')
+                        .text(gettext('Press the UP arrow key to enter the language menu then use UP and DOWN arrow keys to navigate language options. Press ENTER to change to the selected language.')); // jshint ignore:line
 
                     self.container.find('.menu-container .control .control-text')
                         .text(gettext('Open language menu.'));
