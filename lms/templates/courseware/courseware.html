@@ -81,6 +81,10 @@ ${static.get_page_title_breadcrumbs(course_name())}
     BookmarksFactory();
   </%static:require_module>
 
+  <%static:require_module module_name="js/courseware/link_clicked_events" class_name="LinkClickedEvents">
+    LinkClickedEvents();
+  </%static:require_module>
+
   <%include file="../discussion/_js_body_dependencies.html" />
   % if staff_access:
   	<%include file="xqa_interface.html"/>
