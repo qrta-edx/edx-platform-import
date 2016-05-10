@@ -75,3 +75,6 @@ class GradesBlockTransformerTestCase(CourseStructureTestCase):
                     block_structure.get_xblock_field(problem.location, field),
                     expected_result[u'metadata'].get(field)
                 )
+            result = block_structure.get_transformer_block_field(problem.location, GradesBlockTransformer, 'max_score')
+            print problem
+            self.assertEqual(result, object())
