@@ -68,7 +68,7 @@
 
             var profileImageFieldView = new LearnerProfileFieldsView.ProfileImageFieldView({
                 model: accountSettingsModel,
-                valueAttribute: "profile_image",
+                valueAttribute: 'profile_image',
                 editable: editable === 'toggle',
                 messageView: messageView,
                 imageMaxBytes: options['profile_image_max_bytes'],

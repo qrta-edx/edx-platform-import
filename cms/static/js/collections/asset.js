@@ -36,18 +36,6 @@ define(["underscore", "paging-collection", "js/models/asset"], function(_, Pagin
                 totalRecords: response[0].totalCount,
                 totalPages: Math.ceil(response[0].totalCount / response[0].pageSize)
             };
-        },
-
-        getTotalPages: function () {
-            return this.state.totalPages;
-        },
-
-        getTotalRecords: function () {
-            return this.state.totalRecords;
-        },
-
-        getPageSize: function () {
-            return this.state.pageSize;
         }
     });
 

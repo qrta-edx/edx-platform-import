@@ -147,15 +147,13 @@ define([
          * @return {jQuery.Deferred}
          */
         sendRequest: function (text) {
-            this.collection = new NotesCollection(
-                [],
-                {
-                    text: text,
-                    perPage: this.options.perPage,
-                    url: this.el.action
-                }
-            );
-            return this.collection.goTo(1);
+            this.collection = new NotesCollection([], {
+                text: text,
+                perPage: this.options.perPage,
+                url: this.el.action
+            });
+
+            return this.collection.setPage(1);
         }
     });
 

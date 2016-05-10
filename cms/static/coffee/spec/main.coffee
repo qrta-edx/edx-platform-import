@@ -31,7 +31,7 @@ requirejs.config({
         "underscore.string": "common/js/vendor/underscore.string",
         "backbone": "common/js/vendor/backbone",
         "backbone.associations": "xmodule_js/common_static/js/vendor/backbone-associations-min",
-        "backbone.paginator": "xmodule_js/common_static/common/js/vendor/backbone.paginator",
+        "backbone.paginator": "common/js/vendor/backbone.paginator",
         "backbone-relational": "xmodule_js/common_static/js/vendor/backbone-relational.min",
         "tinymce": "xmodule_js/common_static/js/vendor/tinymce/js/tinymce/tinymce.full.min",
         "jquery.tinymce": "xmodule_js/common_static/js/vendor/tinymce/js/tinymce/jquery.tinymce",
@@ -51,6 +51,7 @@ requirejs.config({
         "modernizr": "edx-pattern-library/js/modernizr-custom",
         "afontgarde": "edx-pattern-library/js/afontgarde",
         "edxicons": "edx-pattern-library/js/edx-icons",
+        "paging-collection": "edx-ui-toolkit/js/pagination/paging-collection",
 
         "mathjax": "//cdn.mathjax.org/mathjax/2.6-latest/MathJax.js?config=TeX-MML-AM_SVG&delayStartupUntil=configured",
         "youtube": "//www.youtube.com/player_api?noext",

@@ -28,7 +28,7 @@ requirejs.config({
         "underscore.string": "common/js/vendor/underscore.string",
         "backbone": "common/js/vendor/backbone",
         "backbone.associations": "xmodule_js/common_static/js/vendor/backbone-associations-min",
-        "backbone.paginator": "xmodule_js/common_static/common/js/vendor/backbone.paginator",
+        "backbone.paginator": "common/js/vendor/backbone.paginator",
         "paging-collection": "edx-ui-toolkit/js/pagination/paging-collection",
         "tinymce": "xmodule_js/common_static/js/vendor/tinymce/js/tinymce/tinymce.full.min",
         "jquery.tinymce": "xmodule_js/common_static/js/vendor/tinymce/js/tinymce/jquery.tinymce",

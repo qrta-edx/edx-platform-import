@@ -100,6 +100,7 @@ define([
                     count: 1,
                     num_pages: 1,
                     page: 1,
+                    start: 0,
                     results: initialItems
                 },
                 {parse: true}

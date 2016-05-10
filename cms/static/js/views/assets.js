@@ -302,7 +302,7 @@ define(["jquery", "underscore", "gettext", "js/views/baseview", "js/models/asset
                     '.column-filter-link[data-assetfilter="' + assettype + '"]'));
             },
 
-            closeFilterPopup: function(element){
+            closeFilterPopup: function(element) {
                 var $menu = element.parents('.nav-dd > .nav-item');
                 this.toggleFilterColumnState($menu, element);
             },

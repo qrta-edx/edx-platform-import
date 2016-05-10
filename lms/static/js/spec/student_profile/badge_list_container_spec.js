@@ -27,12 +27,12 @@ define([
                 var path = new URI(request.url).path();
                 expect(path).toBe('/api/badges/v1/assertions/user/staff/');
                 AjaxHelpers.respondWithJson(requests, badge_list_object);
-                var badge_list_container = new BadgeListContainer({
+                var badgeListContainer = new BadgeListContainer({
                     'collection': badgeCollection
 
                 });
-                badge_list_container.render();
-                return badge_list_container;
+                badgeListContainer.render();
+                return badgeListContainer;
             };
 
             afterEach(function () {
