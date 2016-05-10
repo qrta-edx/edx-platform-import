@@ -210,20 +210,34 @@ function (Iterator) {
          * not differs from current speed.
          */
         setSpeed: function (speed, silent, forceUpdate) {
-            if (speed !== this.currentSpeed || forceUpdate) {
+            if (speed !== this.state.speed || forceUpdate) {
                 this.speedsContainer
                     .find('li')
-                    .removeClass('is-active')
-                    .siblings("li[data-speed='" + speed + "']")
-                    .addClass('is-active');
+                    .siblings("li[data-speed='" + speed + "']");
 
-                this.speedButton.find('.value').html(speed + 'x');
+                this.speedButton.find('.value').text(speed + 'x');
                 this.currentSpeed = speed;
+                this.state.speed = speed;
+                
+                this.resetActiveSpeed();
+                this.setActiveSpeed(this.speedsContainer.find('li[data-speed="' + speed + '"]'))
 
                 if (!silent) {
                     this.el.trigger('speedchange', [speed, this.state.speed]);
                 }
             }
+        },
+        
+        resetActiveSpeed: function() {
+            var options = this.speedsContainer.find('li');
+            
+            $(options).each(function(index, el) {
+                $(el).removeClass('is-active');
+            });
+        },
+        
+        setActiveSpeed: function(el) {
+            $(el).addClass('is-active');
         },
 
         /**
@@ -241,10 +255,13 @@ function (Iterator) {
          * @param {jquery Event} event
          */
         clickLinkHandler: function (event) {
-            var speed = $(event.currentTarget).parent().data('speed');
-
-            this.closeMenu();
+            var el = $(event.currentTarget).parent(),
+                speed = $(el).data('speed');
+                
+            this.resetActiveSpeed();
+            this.setActiveSpeed(el);
             this.state.videoCommands.execute('speed', speed);
+            this.closeMenu(true);
 
             return false;
         },
@@ -358,6 +375,8 @@ function (Iterator) {
                 case KEY.SPACE:
                     this.closeMenu(true);
                     this.speedButton.focus();
+                    this.resetActiveSpeed();
+                    this.setActiveSpeed(parent);
                     this.setSpeed(this.state.speedToString(speed));
 
                     return false;

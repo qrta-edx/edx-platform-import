@@ -682,6 +682,7 @@
 
                         state.el.trigger('language_menu:change', [langCode]);
                         self.fetchCaption();
+                        self.closeLanguageMenu(e);
                     }
                 });
             },
@@ -704,7 +705,7 @@
                             'data-index': index,
                             'data-start': start[index],
                             'tabindex': 0
-                        }).html(text);
+                        }).text(text);
 
                         return liEl[0];
                     };
