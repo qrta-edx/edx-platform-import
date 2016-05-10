@@ -1,9 +1,9 @@
 define([
         'js/commerce/views/receipt_view'
     ],
-    function (){
+    function (ReceiptView){
         'use strict';
-        describe("edx.commerce.ReceiptView", function(ReceiptView) {
+        describe("edx.commerce.ReceiptView", function() {
             var view, data = null;
 
             beforeEach(function(){
