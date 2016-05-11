@@ -158,7 +158,7 @@ class AccountSettingsPageTest(AccountSettingsTestMixin, WebAppTest):
         """
         expected_sections_structure = [
             {
-                'title': 'Basic Account Information (required)',
+                'title': 'Basic Account Information',
                 'fields': [
                     'Username',
                     'Full Name',
@@ -169,20 +169,12 @@ class AccountSettingsPageTest(AccountSettingsTestMixin, WebAppTest):
                 ]
             },
             {
-                'title': 'Additional Information (optional)',
+                'title': 'Additional Information',
                 'fields': [
                     'Education Completed',
                     'Gender',
                     'Year of Birth',
                     'Preferred Language',
-                ]
-            },
-            {
-                'title': 'Connected Accounts',
-                'fields': [
-                    'Dummy',
-                    'Facebook',
-                    'Google',
                 ]
             }
         ]

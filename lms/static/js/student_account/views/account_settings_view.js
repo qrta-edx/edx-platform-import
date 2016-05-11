@@ -22,7 +22,7 @@
             },
 
             initialize: function (options) {
-                this.options = _.extend({}, options);
+                this.options = options;
                 _.bindAll(this, 'render', 'changeTab', 'renderFields', 'showLoadingError');
             },
 

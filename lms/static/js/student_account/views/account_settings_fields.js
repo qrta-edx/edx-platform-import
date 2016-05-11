@@ -158,9 +158,7 @@
             },
 
             render: function () {
-                var linkTitle;
-                var linkClass;
-                var subTitle;
+                var linkTitle, linkClass, subTitle;
                 if (this.options.connected) {
                     linkTitle = gettext('Unlink this account');
                     linkClass = 'social-field-linked';

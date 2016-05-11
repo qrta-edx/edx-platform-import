@@ -11,6 +11,8 @@
 .wrapper-account-settings {
     background: $white;
     width: 100%;
+    min-width: 1024px;
+
     .account-settings-container {
         max-width: grid-width(12);
         padding: 0;
@@ -221,7 +223,11 @@
 
                     .field-label {
                         font-size: 24px;
-                        margin-bottom: 34px;
+                    }
+
+                    .u-field-social-help {
+                        display: inline-block;
+                        padding: 20px 0 6px 0;
                     }
 
                     .u-field-link {

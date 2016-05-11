@@ -11,8 +11,7 @@
         var AccountSectionView = Backbone.View.extend({
 
             initialize: function (options) {
-                this.options = _.extend({}, options);
-                _.bindAll(this, 'render');
+                this.options = options;
             },
 
             render: function () {
